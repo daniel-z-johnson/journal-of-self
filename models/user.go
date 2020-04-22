@@ -23,15 +23,19 @@ type User struct {
 }
 
 // CreateUser - from the required fields create a User
-func CreateUser(username string, email string, password string, icon string) *User {
+func CreateUser(username string, email string, password string, icon string) (*User, error) {
+	hashed, err := hashPassword(password)
+	if err != nil {
+		return nil, err
+	}
 	return &User{
 		Username:  username,
 		Email:     email,
-		Password:  hashPassword(password),
+		Password:  hashed,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 		Icon:      icon,
-	}
+	}, nil
 }
 
 func hashPassword(password string) (string, error) {

@@ -1,7 +1,7 @@
-package maodels
+package models
 
 import (
-	"encoding/base64"
+//	"encoding/base64"
 	"time"
 
 	"github.com/google/uuid"
@@ -43,5 +43,5 @@ func hashPassword(password string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return base64.StdEncoding.EncodeToString(hashed), nil
+	return string(hashed), nil
 }

@@ -1,6 +1,7 @@
 package maodels
 
 import (
+	"encoding/base64"
 	"time"
 
 	"github.com/google/uuid"
@@ -33,6 +34,10 @@ func CreateUser(username string, email string, password string, icon string) *Us
 	}
 }
 
-func hashPassword(password string) string {
-	return bcrypt.GenerateFromPassword([]byte(password))
+func hashPassword(password string) (string, error) {
+	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(hashed), nil
 }

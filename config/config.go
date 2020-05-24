@@ -5,10 +5,12 @@ import (
 	"os"
 )
 
+// Config - represents the configuration for this application
 type Config struct {
 	Database *DatabaseSQL `json:"database"`
 }
 
+// DatabaseSQL - the configuration for the SQL db for this application
 type DatabaseSQL struct {
 	Host     string `json:"host"`
 	Port     int    `json:"port"`

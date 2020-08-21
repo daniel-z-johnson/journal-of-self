@@ -1,7 +1,7 @@
 package models
 
 import (
-//	"encoding/base64"
+	//	"encoding/base64"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,6 +20,13 @@ type User struct {
 	UpdatedAt time.Time
 	// will be a generated icon, the user will be able to re-generated several times a day, value will be location
 	Icon string
+}
+
+// UserService - the interface to create, delete, and find users
+type UserService interface {
+	// Authenticate - authenticates an user for signing in
+	Authenticate(username, password string) (*User, error)
+	UserDB
 }
 
 // CreateUser - from the required fields create a User
@@ -44,4 +51,15 @@ func hashPassword(password string) (string, error) {
 		return "", err
 	}
 	return string(hashed), nil
+}
+
+// UserDB - the interface for interacting with DB, will be postgres for this app
+type UserDB interface {
+	Insert(User) (*User, error)
+	Update(User) (*User, error)
+	Delete(User) error
+	ByUsername(User) (*User, error)
+}
+
+type UserPGX struct {
 }

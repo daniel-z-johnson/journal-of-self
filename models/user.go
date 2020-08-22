@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -61,5 +62,10 @@ type UserDB interface {
 	ByUsername(User) (*User, error)
 }
 
-type UserPGX struct {
+type userPGX struct {
+	psql *pgx.Conn
+}
+
+func (u *userPGX) Insert(user User) (*User, error) {
+
 }

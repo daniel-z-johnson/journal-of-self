@@ -1,4 +1,4 @@
-module daniel-z-johnson/journal-of-self
+module github.com/daniel-z-johnson/journal-of-self
 
 go 1.14
 

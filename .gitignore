@@ -13,3 +13,8 @@ conf.toml
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# Config
+config.json
+
+journal-of-self

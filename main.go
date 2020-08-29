@@ -17,7 +17,13 @@ func main() {
 	services, err := models.NewServices(conConfig.Database)
 	defer services.Close()
 	if err != nil {
+		fmt.Println(err)
 		panic(err)
 	}
+	u, err := models.CreateUser("a", "a", "a", "a")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(services.Uservice.Insert(*u))
 	fmt.Println(services)
 }

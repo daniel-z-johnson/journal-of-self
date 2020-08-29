@@ -9,8 +9,6 @@ import (
 	//	"encoding/base64"
 	"time"
 
-	"github.com/google/uuid"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,7 +18,7 @@ var (
 
 // User represents, well, a user
 type User struct {
-	ID       uuid.UUID
+	ID       int64
 	Username string
 	Email    string
 	// never raw, always use bcyrpt
@@ -43,6 +41,7 @@ type userService struct {
 }
 
 func (us *userService) Insert(user User) (*User, error) {
+	fmt.Println(us.UserDB)
 	return us.UserDB.Insert(user)
 }
 
@@ -59,7 +58,11 @@ func (us *userService) ByUsername(username string) (*User, error) {
 }
 
 func newUserService(connection *pgxpool.Pool) UserService {
-	return &userService{}
+	return &userService{
+		UserDB: &userPGX{
+			psql: connection,
+		},
+	}
 }
 
 // CreateUser - from the required fields create a User
@@ -101,7 +104,7 @@ type userPGX struct {
 func (u *userPGX) Insert(user User) (*User, error) {
 	err := u.psql.QueryRow(ctx, `INSERT INTO users (username, email, password, created_at, updated_at, icon) VALUES 
 													     ($1,    $2,       $3,         $4,         $5,   $6) RETURNING id`,
-		user.Username, user.Email, user.Password, time.Now().Second(), time.Now().Second(), user.Icon).Scan(&user.ID)
+		user.Username, user.Email, user.Password, time.Now(), time.Now(), user.Icon).Scan(&user.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -116,6 +119,6 @@ func (u *userPGX) Delete(user User) error {
 	return fmt.Errorf("Not implements")
 }
 
-func (u *userPGX) ByUsername(user User) (*User, error) {
+func (u *userPGX) ByUsername(username string) (*User, error) {
 	return nil, fmt.Errorf("Not implemented")
 }

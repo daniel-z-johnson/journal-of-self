@@ -10,6 +10,8 @@ import (
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/google/uuid"
 )
 
 var (
@@ -18,7 +20,7 @@ var (
 
 // User represents, well, a user
 type User struct {
-	ID       int64
+	ID       uuid.UUID
 	Username string
 	Email    string
 	// never raw, always use bcyrpt
@@ -71,7 +73,12 @@ func CreateUser(username string, email string, password string, icon string) (*U
 	if err != nil {
 		return nil, err
 	}
+	uuid, err := uuid.NewRandom()
+	if err != nil {
+		return nil, err
+	}
 	return &User{
+		ID:        uuid,
 		Username:  username,
 		Email:     email,
 		Password:  hashed,
@@ -102,9 +109,9 @@ type userPGX struct {
 }
 
 func (u *userPGX) Insert(user User) (*User, error) {
-	err := u.psql.QueryRow(ctx, `INSERT INTO users (username, email, password, created_at, updated_at, icon) VALUES 
-													     ($1,    $2,       $3,         $4,         $5,   $6) RETURNING id`,
-		user.Username, user.Email, user.Password, time.Now(), time.Now(), user.Icon).Scan(&user.ID)
+	_, err := u.psql.Exec(ctx, `INSERT INTO users (id, username, email, password, created_at, updated_at, icon) VALUES 
+													($1,      $2,     $3,       $4,        $5,         $6,   $7)`,
+		user.ID, user.Username, user.Email, user.Password, time.Now(), time.Now(), user.Icon)
 	if err != nil {
 		return nil, err
 	}

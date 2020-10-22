@@ -6,5 +6,6 @@ require (
 	github.com/google/uuid v1.1.1
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v4 v4.8.1
+	github.com/pressly/goose v2.6.0+incompatible
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 )

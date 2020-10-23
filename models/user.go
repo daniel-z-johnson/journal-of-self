@@ -18,10 +18,10 @@ var (
 // User represents, well, a user
 type User struct {
 	ID       uuid.UUID
-	Username string
-	Email    string
+	Username string `json:"username"`
+	Email    string `json:"email"`
 	// never raw, always use bcyrpt
-	Password  string
+	Password  string `json:"-"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	// will be a generated icon, the user will be able to re-generated several times a day, value will be location

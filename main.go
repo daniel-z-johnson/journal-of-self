@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/daniel-z-johnson/journal-of-self/config"
+	"github.com/daniel-z-johnson/journal-of-self/controllers"
+	"github.com/gorilla/mux"
 
 	"github.com/daniel-z-johnson/journal-of-self/models"
 )
@@ -26,4 +29,9 @@ func main() {
 	}
 	fmt.Println(services.Uservice.Insert(*u))
 	fmt.Println(services)
+
+	uc := controllers.NewUserController(services.Uservice)
+	r := mux.NewRouter()
+	r.HandleFunc("/users", uc.Signup).Methods("POST")
+	http.ListenAndServe(":1117", r)
 }

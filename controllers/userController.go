@@ -29,5 +29,8 @@ func (uc *UserController) Signup(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 	user, err := uc.us.Insert(u)
+	if err != nil {
+		http.Error(resp, "Issue creating user", http.StatusBadRequest)
+	}
 	fmt.Printf("%+v %+v\n", user, err)
 }

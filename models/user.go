@@ -17,15 +17,15 @@ var (
 
 // User represents, well, a user
 type User struct {
-	ID       uuid.UUID
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	ID       uuid.UUID `json:"-"`
+	Username string    `json:"username"`
+	Email    string    `json:"email"`
 	// never raw, always use bcyrpt
-	Password  string `json:"-"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Password  string    `json:"-"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 	// will be a generated icon, the user will be able to re-generated several times a day, value will be location
-	Icon string
+	Icon string `json:"icon"`
 }
 
 func hashPassword(password string) (string, error) {

@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/daniel-z-johnson/journal-of-self/models"
@@ -31,6 +30,14 @@ func (uc *UserController) Signup(resp http.ResponseWriter, req *http.Request) {
 	user, err := uc.us.Insert(u)
 	if err != nil {
 		http.Error(resp, "Issue creating user", http.StatusBadRequest)
+		return
 	}
-	fmt.Printf("%+v %+v\n", user, err)
+	body, err := json.MarshalIndent(*user, "", "\t")
+	if err != nil {
+		http.Error(resp, "Issue creating user", http.StatusBadRequest)
+		return
+	}
+	resp.Header().Set("Content-Type", "application/json")
+	resp.Write(body)
+
 }

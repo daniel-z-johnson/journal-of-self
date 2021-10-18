@@ -18,3 +18,5 @@ conf.toml
 config.json
 
 journal-of-self
+
+.idea/

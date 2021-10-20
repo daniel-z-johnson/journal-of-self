@@ -3,7 +3,6 @@ package models
 import (
 	"context"
 
-	//	"encoding/base64"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"

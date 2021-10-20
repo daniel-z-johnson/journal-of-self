@@ -12,33 +12,33 @@ import (
 type UserService interface {
 	// Authenticate - authenticates an user for signing in
 	// Authenticate(username, password string) (*User, error)
-	UserDB
+	userDB
 }
 
 type userService struct {
-	UserDB
+	userDB
 }
 
 func (us *userService) Insert(user User) (*User, error) {
-	fmt.Println(us.UserDB)
-	return us.UserDB.Insert(user)
+	fmt.Println(us.userDB)
+	return us.userDB.Insert(user)
 }
 
 func (us *userService) Update(user User) (*User, error) {
-	return us.UserDB.Update(user)
+	return us.userDB.Update(user)
 }
 
 func (us *userService) Delete(user User) error {
-	return us.UserDB.Delete(user)
+	return us.userDB.Delete(user)
 }
 
 func (us *userService) ByUsername(username string) (*User, error) {
-	return us.UserDB.ByUsername(username)
+	return us.userDB.ByUsername(username)
 }
 
 func newUserService(connection *pgxpool.Pool) UserService {
 	return &userService{
-		UserDB: &userPGX{
+		userDB: &userPGX{
 			psql: connection,
 		},
 	}

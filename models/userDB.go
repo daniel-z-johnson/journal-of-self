@@ -8,12 +8,15 @@ import (
 )
 
 // UserDB - the interface for interacting with DB, will be postgres for this app
-type UserDB interface {
+type userDB interface {
 	Insert(User) (*User, error)
 	Update(User) (*User, error)
 	Delete(User) error
 	ByUsername(string) (*User, error)
 }
+
+// Make sure userPGX implements userDB
+var  _ userDB = &userPGX{}
 
 type userPGX struct {
 	psql *pgxpool.Pool

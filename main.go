@@ -6,7 +6,7 @@ import (
 
 	"github.com/daniel-z-johnson/journal-of-self/config"
 	"github.com/daniel-z-johnson/journal-of-self/controllers"
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 
 	"github.com/daniel-z-johnson/journal-of-self/models"
 )
@@ -31,7 +31,7 @@ func main() {
 	fmt.Println(services)
 
 	uc := controllers.NewUserController(services.Uservice)
-	r := mux.NewRouter()
-	r.HandleFunc("/users", uc.Signup).Methods("POST")
+	r := chi.NewRouter()
+	r.Get("/users", uc.Signup)
 	http.ListenAndServe(":1117", r)
 }

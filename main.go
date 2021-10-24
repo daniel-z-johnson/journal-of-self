@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/daniel-z-johnson/journal-of-self/views"
 	"net/http"
 
 	"github.com/daniel-z-johnson/journal-of-self/config"
@@ -33,5 +34,6 @@ func main() {
 	uc := controllers.NewUserController(services.Uservice)
 	r := chi.NewRouter()
 	r.Get("/users", uc.Signup)
+	r.Handle("/static/*", views.StaticFilesServer())
 	http.ListenAndServe(":1117", r)
 }

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/daniel-z-johnson/journal-of-self/config"
-	"github.com/daniel-z-johnson/journal-of-self/controllers"
 	"github.com/go-chi/chi/v5"
 
+	"github.com/daniel-z-johnson/journal-of-self/config"
+	"github.com/daniel-z-johnson/journal-of-self/controllers"
 	"github.com/daniel-z-johnson/journal-of-self/models"
 	"github.com/daniel-z-johnson/journal-of-self/views"
 )

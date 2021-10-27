@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/daniel-z-johnson/journal-of-self/views"
 	"net/http"
 
 	"github.com/daniel-z-johnson/journal-of-self/config"
 	"github.com/daniel-z-johnson/journal-of-self/controllers"
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 
 	"github.com/daniel-z-johnson/journal-of-self/models"
 )
@@ -34,8 +35,9 @@ func main() {
 	fmt.Println(services.UserService.Insert(*u))
 	fmt.Println(services)
 
-	uc := controllers.NewUserController(services.UserService)
-	r := mux.NewRouter()
-	r.HandleFunc("/users", uc.Signup).Methods("POST")
+	uc := controllers.NewUserController(services.Uservice)
+	r := chi.NewRouter()
+	r.Get("/users", uc.Signup)
+	r.Handle("/static/*", views.StaticFilesServer())
 	http.ListenAndServe(":1117", r)
 }

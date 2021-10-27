@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/daniel-z-johnson/journal-of-self/views"
 	"net/http"
 
 	"github.com/daniel-z-johnson/journal-of-self/config"
@@ -11,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"github.com/daniel-z-johnson/journal-of-self/models"
+	"github.com/daniel-z-johnson/journal-of-self/views"
 )
 
 func main() {

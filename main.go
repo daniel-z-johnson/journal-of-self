@@ -35,7 +35,7 @@ func main() {
 	fmt.Println(services.UserService.Insert(*u))
 	fmt.Println(services)
 
-	uc := controllers.NewUserController(services.Uservice)
+	uc := controllers.NewUserController(services.UserService)
 	r := chi.NewRouter()
 	r.Get("/users", uc.Signup)
 	r.Handle("/static/*", views.StaticFilesServer())

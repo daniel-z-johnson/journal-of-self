@@ -3,8 +3,8 @@ module github.com/daniel-z-johnson/journal-of-self
 go 1.17
 
 require (
+	github.com/go-chi/chi/v5 v5.0.4
 	github.com/google/uuid v1.3.0
-	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v4 v4.13.0
 	github.com/pressly/goose/v3 v3.3.0
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519

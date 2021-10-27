@@ -2,20 +2,27 @@ package models
 
 import (
 	"context"
+	"database/sql"
+	"embed"
 	"fmt"
 
 	"github.com/daniel-z-johnson/journal-of-self/config"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
+	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/pressly/goose/v3"
 )
 
+//go:embed migration
+var migrations embed.FS
+
 type Services struct {
-	Uservice UserService
-	pool     *pgxpool.Pool
+	UserService UserService
+	pool        *pgxpool.Pool
 }
 
-func NewServices(dbConfig *config.DatabaseSQL) (*Services, error) {
+func NewServices(dbConfig *config.DatabaseSQL, migrate bool) (*Services, error) {
 	connConfig := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		dbConfig.Host, dbConfig.Port, dbConfig.Username,
@@ -30,14 +37,35 @@ func NewServices(dbConfig *config.DatabaseSQL) (*Services, error) {
 		return true
 	}
 	pgxPool, err := pgxpool.ConnectConfig(context.Background(), conn)
+	if migrate {
+		fmt.Println("Doing migration")
+		if err := migration(connConfig); err != nil {
+			return nil, err
+		}
+	}
 	if err != nil {
 		return nil, err
 	}
 	return &Services{
-		pool:     pgxPool,
-		Uservice: newUserService(pgxPool),
+		pool:        pgxPool,
+		UserService: newUserService(pgxPool),
 	}, nil
 
+}
+
+func migration(postgresConfig string) error {
+	goose.SetBaseFS(migrations)
+
+	db, err := sql.Open("pgx", postgresConfig)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	if err := goose.Up(db, "migration"); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Services) Close() {

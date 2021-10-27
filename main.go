@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net/http"
 
@@ -12,12 +13,15 @@ import (
 )
 
 func main() {
+	migrate := flag.Bool("migrate", false, "If set, will do migration")
+	flag.Parse()
+
 	fmt.Println("Application 'Journal-of-self' start")
 	conConfig, err := config.LoadConfig("config.json")
 	if err != nil {
 		panic(err)
 	}
-	services, err := models.NewServices(conConfig.Database)
+	services, err := models.NewServices(conConfig.Database, *migrate)
 	defer services.Close()
 	if err != nil {
 		fmt.Println(err)
@@ -27,10 +31,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(services.Uservice.Insert(*u))
+	fmt.Println(services.UserService.Insert(*u))
 	fmt.Println(services)
 
-	uc := controllers.NewUserController(services.Uservice)
+	uc := controllers.NewUserController(services.UserService)
 	r := mux.NewRouter()
 	r.HandleFunc("/users", uc.Signup).Methods("POST")
 	http.ListenAndServe(":1117", r)

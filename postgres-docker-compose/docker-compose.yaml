@@ -8,3 +8,10 @@ services:
       POSTGRES_PASSWORD: postgress
       POSTGRES_USER:     journal
       POSTGRES_DB:       journal
+  adminer:
+    image: "adminer:4.8.1"
+    restart: always
+    environment:
+      ADMINER_DESIGN: dracula
+    ports:
+      - 4447:8080

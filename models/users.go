@@ -34,3 +34,11 @@ func Create(name string, email string, pwd string) (*User, error) {
 func (u *User) timeSinceCreated() time.Duration {
 	return time.Since(u.CreatedAt)
 }
+
+func (u *User) Authenticate(pwd string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(pwd))
+	if err != nil {
+		return false
+	}
+	return true
+}
